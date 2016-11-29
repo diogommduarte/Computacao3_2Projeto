@@ -18,6 +18,9 @@ public class Individuos {
 				familia[i][k] = salarioFamilia;
 			}
 		}
+		
+		
+		//o sebas e parvo
 
 	}
 
