@@ -1,16 +1,22 @@
+import java.util.ArrayList;
 import java.util.Random;
 
 public class Individuos {
 
-	protected int numFamilias;
-	protected int salarioFamilia;
-	protected String tipoEmprego;
-	protected Random r = new Random();
-	protected int totalIndividuos;
+	protected String localTrabalho;
 
-	Object[][] familia;
 
-	public Individuos() {
+
+	public Individuos(){
+		
+		
+		
+	}
+	
+
+	
+	
+	/*public Individuos() {
 
 		familia = new Object[numFamilias][];
 
@@ -25,54 +31,9 @@ public class Individuos {
 
 		}
 
-	}
+	}*/
+	
 
-	public int getTotalIndividuos() {
-		return totalIndividuos;
-	}
 
-	public void setTotalIndividuos(int totalIndividuos) {
-		this.totalIndividuos = totalIndividuos;
-	}
-
-	public Object[][] getFamilia() {
-		return familia;
-	}
-
-	public void setFamilia(Object[][] familia) {
-		this.familia = familia;
-	}
-
-	public int getNumFamilias() {
-		return numFamilias;
-	}
-
-	public void setNumFamilias(int numFamilias) {
-		this.numFamilias = numFamilias;
-	}
-
-	public int getSalarioFamilia() {
-		return salarioFamilia;
-	}
-
-	public void setSalarioFamilia(int salarioFamilia) {
-		this.salarioFamilia = salarioFamilia;
-	}
-
-	public String getTipoEmprego() {
-		return tipoEmprego;
-	}
-
-	public void setTipoEmprego(String tipoEmprego) {
-		this.tipoEmprego = tipoEmprego;
-	}
-
-	public Random getR() {
-		return r;
-	}
-
-	public void setR(Random r) {
-		this.r = r;
-	}
 
 }
