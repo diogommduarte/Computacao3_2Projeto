@@ -1,39 +1,46 @@
 import java.util.ArrayList;
-import java.util.Random;
+import java.util.Collection;
 
-public class Individuos {
+public class Individuos extends AgenteEconomico {
 
 	protected String localTrabalho;
-
-
-
-	public Individuos(){
+	protected int numFamilias;
+	
+	public Individuos(int income, String localTrabalho) {
 		
 		
 		
-	}
-	
-
-	
-	
-	/*public Individuos() {
-
-		familia = new Object[numFamilias][];
+		ArrayList<ArrayList<Individuos>> familias = new ArrayList<ArrayList<Individuos>>(numFamilias);
 
 		for (int i = 0; i < numFamilias; i++) {
-			familia[i] = new Object[2];// fazer metodo auxiliar
-			for (int k = 0; k < familia[i].length; k++) {
-				salarioFamilia = 500 + r.nextInt(5000 - 500 + 1);
-				familia[i][k] = salarioFamilia;
-				//fazer soma total individuos!
-
+			
+			probabilidade = r.nextInt(101);
+			
+			Individuos ind1 = new Individuos(income, localTrabalho);
+			Individuos ind2 = new Individuos(income, localTrabalho);
+			
+			
+			if(probabilidade <= 70)//2individuos 70%
+			{
+				familias.addAll((Collection<? extends ArrayList<Individuos>>) ind1);
+				familias.addAll((Collection<? extends ArrayList<Individuos>>) ind2);
 			}
-
+			else//1individuo 30%
+			{
+				familias.addAll((Collection<? extends ArrayList<Individuos>>) ind1);
+			}
+			
+			
 		}
 
-	}*/
+	}
 	
+	
+	
+	public int gastos() {
+		return 0;
+	}
 
-
-
+	
+	
 }
