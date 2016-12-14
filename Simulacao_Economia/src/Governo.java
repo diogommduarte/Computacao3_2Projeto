@@ -1,8 +1,13 @@
 
 public class Governo extends AgenteEconomico{
 	
-	private int numEmpregados;
 	
+	
+	public Governo(int income) {
+		super(income);
+		// TODO Auto-generated constructor stub
+	}
+
 	public int gastos() {
 		return 0;
 	}

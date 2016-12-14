@@ -1,17 +1,17 @@
-import java.util.ArrayList;
-import java.util.Random;
-
 public abstract class AgenteEconomico {
-
 	protected int income;
-	protected int probabilidade;
 	
-	
-	Random r = new Random();
+	public AgenteEconomico (int income){
+		this.income=income;
+	}
 
-	
-	
-	
+public int getIncome() {
+		return income;
+	}
+
+	public void setIncome(int income) {
+		this.income = income;
+	}
 
 	public abstract int gastos();
 
