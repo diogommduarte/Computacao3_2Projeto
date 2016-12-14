@@ -50,14 +50,12 @@ public class Main {
 		System.out.println("Número total de individuos: " + contadorIndividuos);
 
 		System.out.println("1: " + familias.size());
-		// for (int i = 0; i < familias.size(); i++) {
-		// System.out.println("Familias 1 vez" + (i + 1) + familias.get(i));
-		// }
 
 	}
 
 	public static void funcGov() {
-		numFuncionariosGov = 100 + r.nextInt(401);
+		//numFuncionariosGov = 100 + r.nextInt(401);
+		 numFuncionariosGov = 150;
 		System.out.println("Individuos do governo: " + numFuncionariosGov);
 
 		int b, c;
@@ -83,13 +81,10 @@ public class Main {
 		}
 
 		System.out.println("2: " + familias.size());
-		// for (int i = 0; i < familias.size(); i++) {
-		// System.out.println("Familias 2 vez" + (i + 1) + familias.get(i));
-		// }
 
 		for (int i = 0; i < numFuncionariosGov; i++) {
 			do {
-				b = r.nextInt(numFamilias);
+				b = r.nextInt(familias.size());
 				c = 0;
 				if (familias.get(b).size() == 2) {
 					c = r.nextInt(2);
@@ -102,18 +97,22 @@ public class Main {
 	}
 
 	public static void funcEmp() {
-		int numFuncionariosEmp, a, b;
+		int numFuncionariosEmp, b, c;
+
+		
+		
+		
 		for (int i = 0; i < numEmpresas; i++) {
 			numFuncionariosEmp = 1 + r.nextInt(51);
 			for (int k = 0; k < numFuncionariosEmp; k++) {
 				do {
-					a = r.nextInt(numFamilias);
-					b = 0;
-					if (familias.get(a).size() == 2) {
-						b = r.nextInt(2);
+					c = r.nextInt(numFamilias);
+					c = 0;
+					if (familias.get(c).size() == 2) {
+						c = r.nextInt(2);
 					}
-				} while (familias.get(a).get(b).getLocalTrabalho().equals("") == false);
-				familias.get(a).get(b).setLocalTrabalho("Empresa " + k);
+				} while (familias.get(c).get(c).getLocalTrabalho().equals("") == false);
+				familias.get(c).get(c).setLocalTrabalho("Empresa " + k);
 			}
 		}
 	}
