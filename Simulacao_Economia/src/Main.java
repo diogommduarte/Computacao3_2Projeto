@@ -22,9 +22,7 @@ public class Main {
 		System.out.print("Indique o numero de empresas que quer criar: ");
 		numEmpresas = s.nextInt();
 		funcEmp();
-		
-		
-		
+		printFamilias();
 
 	}
 
@@ -88,7 +86,7 @@ public class Main {
 
 		System.out.println("Número de Familias depois da funcGov: " + familias.size());
 
-		if (contadorIndividuos != numFuncionariosGov) {
+		if (contadorIndividuos == (numFuncionariosGov + 1)) {
 			if (familias.get(familias.size() - 1).size() == 2) {
 				familias.get(familias.size() - 1).remove(1);
 				contadorIndividuos--;
@@ -118,52 +116,102 @@ public class Main {
 				}
 			} while (familias.get(b).get(c).getLocalTrabalho().equals("") == false);
 			familias.get(b).get(c).setLocalTrabalho("Governo");
-			
+
 		}
 
-		
-			
-		}
-
-	
-
-	
+	}
 
 	public static void funcEmp() {
-		int numFuncionariosEmp, b, c;
+		int numFuncionariosEmp, b, c, numeroDeIndQueFaltaAlocar;
 
-		if (contadorIndividuos == numFuncionariosGov)// adicionar auto mis
-														// individuos para cada
-														// empresa
-		{
+		System.out.println("contadorIndividuos " + contadorIndividuos);
+		System.out.println(" numFuncionariosGov " + numFuncionariosGov);
+		int diferençaEntreContadorEFuncionariosGov = contadorIndividuos - numFuncionariosGov;
+		
+		if(diferençaEntreContadorEFuncionariosGov > 0){
+			numeroDeIndQueFaltaAlocar = diferençaEntreContadorEFuncionariosGov;
+			System.out.println("numeroDeIndQueFaltaAlocar" + numeroDeIndQueFaltaAlocar);
+			while(numeroDeIndQueFaltaAlocar > 0)	
+			{
 
-		}
-
-		for (int i = 0; i < numEmpresas; i++) {
-			numFuncionariosEmp = 1 + r.nextInt(51);
-			for (int k = 0; k < numFuncionariosEmp; k++) {
-				do {
-					c = r.nextInt(numFamilias);
-					c = 0;
-					if (familias.get(c).size() == 2) {
-						c = r.nextInt(2);
+				for (int i = 0; i < numEmpresas; i++) {
+					numFuncionariosEmp = 1 + r.nextInt(51); 
+					for (int k = 0; k < numFuncionariosEmp; k++) {
+						numeroDeIndQueFaltaAlocar --;
+						do {
+							b = r.nextInt(familias.size());
+							c = 0;
+							if (familias.get(b).size() == 2) {
+								c = r.nextInt(2);
+							}
+							
+							
+						} while (familias.get(b).get(c).getLocalTrabalho().equals("Governo") == true);
+						familias.get(b).get(c).setLocalTrabalho("Empresa " + (i+1) + "(Nº Trabalhadores: " + numFuncionariosEmp + " )");
+						
+						
+						
 					}
-				} while (familias.get(c).get(c).getLocalTrabalho().equals("") == false);
-				familias.get(c).get(c).setLocalTrabalho("Empresa " + i);
+					
+					System.out.println("numeroDeIndQueFaltaAlocar" + numeroDeIndQueFaltaAlocar);
+				}
+			
 			}
+			
+			
 		}
+			
+		
+		
+		
+		/*while(diferençaEmpTotal < 0) {
+			System.out.println("OLA");
+			probabilidade = r.nextInt(101);
+			if (probabilidade <= 70) {
+				a = new ArrayList<Individuos>(2);
+				a.add(new Individuos(500 + r.nextInt(5001), ""));
+				a.add(new Individuos(500 + r.nextInt(5001), ""));
+				familias.add(a);
+				diferençaEmpTotal +=2;
+				contadorIndividuos += 2;
+			} else {
+				a = new ArrayList<Individuos>(1);
+				a.add(new Individuos(500 + r.nextInt(5001), ""));
+				familias.add(a);
+				diferençaEmpTotal ++;
+				contadorIndividuos++;
+			}
+
+		}*/
+
+		/*	for (int i = 0; i < numFuncionariosGov; i++) {
+			do {
+				b = r.nextInt(familias.size());
+				c = 0;
+				if (familias.get(b).size() == 2) {
+					c = r.nextInt(2);
+				}
+			} while (familias.get(b).get(c).getLocalTrabalho().equals("") == false);
+			familias.get(b).get(c).setLocalTrabalho("Governo");*/
+		
+		
+			
+		
+
+		
+
 	}
-	
-	public static void printFamilias(){
-		
-	
-		
+
+	public static void printFamilias() {
+
 		for (int i = 0; i < familias.size(); i++) {
-			for(int k = 0; k < familias.get(i).size(); k++){
-				System.out.println("Familia " + (i+1) + " Individuo " + (k+1)); familias.get(i).get(k).print();
+			System.out.println("Familia " + (i + 1));
+			for (int k = 0; k < familias.get(i).size(); k++) {
+				System.out.print("Individuo " + (k + 1) + " ");
+				familias.get(i).get(k).print();
 			}
 			System.out.println();
-	}
-	
+		}
+
 	}
 }
