@@ -27,4 +27,10 @@ public class Individuos extends AgenteEconomico {
 		return 0;
 	}
 	
+	public void print()
+	{
+		
+		System.out.println("Salário -> " + income + "€"  + " / Local de Trabalho -> " + localTrabalho);
+	}
+	
 }

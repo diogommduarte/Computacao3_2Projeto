@@ -18,13 +18,13 @@ public class Main {
 		numFamilias = s.nextInt();
 		criarFamilias();
 		funcGov();
+		printFamilias();
 		System.out.print("Indique o numero de empresas que quer criar: ");
 		numEmpresas = s.nextInt();
 		funcEmp();
-
-		for (int i = 0; i < familias.size(); i++) {
-			System.out.println("Familias " + (i + 1) + familias.get(i));
-		}
+		
+		
+		
 
 	}
 
@@ -47,15 +47,17 @@ public class Main {
 				contadorIndividuos++;
 			}
 		}
+
 		System.out.println("Número total de individuos: " + contadorIndividuos);
 
-		System.out.println("1: " + familias.size());
+		System.out.println("Número de Familias Inicial: " + familias.size());
 
 	}
 
 	public static void funcGov() {
-		//numFuncionariosGov = 100 + r.nextInt(401);
-		 numFuncionariosGov = 150;
+		numFuncionariosGov = 100 + r.nextInt(401);
+		// numFuncionariosGov = 150;
+
 		System.out.println("Individuos do governo: " + numFuncionariosGov);
 
 		int b, c;
@@ -63,7 +65,7 @@ public class Main {
 
 		while (diferençaGovTotal < 0) {
 
-			System.out.println("diferençaGovTotal = " + diferençaGovTotal);
+			// System.out.println("diferençaGovTotal = " + diferençaGovTotal);
 			probabilidade = r.nextInt(101);
 			if (probabilidade <= 70) {
 				a = new ArrayList<Individuos>(2);
@@ -71,16 +73,41 @@ public class Main {
 				a.add(new Individuos(500 + r.nextInt(5001), ""));
 				familias.add(a);
 				diferençaGovTotal += 2;
+				contadorIndividuos += 2;
 			} else {
 				a = new ArrayList<Individuos>(1);
 				a.add(new Individuos(500 + r.nextInt(5001), ""));
 				familias.add(a);
 				diferençaGovTotal++;
+				contadorIndividuos++;
 			}
 
 		}
 
-		System.out.println("2: " + familias.size());
+		System.out.println("Número total de individuos depois da funcGov: " + contadorIndividuos);
+
+		System.out.println("Número de Familias depois da funcGov: " + familias.size());
+
+		if (contadorIndividuos != numFuncionariosGov) {
+			if (familias.get(familias.size() - 1).size() == 2) {
+				familias.get(familias.size() - 1).remove(1);
+				contadorIndividuos--;
+
+			}
+
+			else {
+				familias.remove(familias.size() - 1);
+				contadorIndividuos--;
+
+			}
+
+			System.out
+					.println("Número total de individuos depois da funcGov e depois de apagar o individuo excdentário: "
+							+ contadorIndividuos);
+
+			System.out.println("Número de Familias depois da funcGov e depois de apagar o individuo excdentário:: "
+					+ familias.size());
+		}
 
 		for (int i = 0; i < numFuncionariosGov; i++) {
 			do {
@@ -91,17 +118,27 @@ public class Main {
 				}
 			} while (familias.get(b).get(c).getLocalTrabalho().equals("") == false);
 			familias.get(b).get(c).setLocalTrabalho("Governo");
-
+			
 		}
 
-	}
+		
+			
+		}
+
+	
+
+	
 
 	public static void funcEmp() {
 		int numFuncionariosEmp, b, c;
 
-		
-		
-		
+		if (contadorIndividuos == numFuncionariosGov)// adicionar auto mis
+														// individuos para cada
+														// empresa
+		{
+
+		}
+
 		for (int i = 0; i < numEmpresas; i++) {
 			numFuncionariosEmp = 1 + r.nextInt(51);
 			for (int k = 0; k < numFuncionariosEmp; k++) {
@@ -112,8 +149,21 @@ public class Main {
 						c = r.nextInt(2);
 					}
 				} while (familias.get(c).get(c).getLocalTrabalho().equals("") == false);
-				familias.get(c).get(c).setLocalTrabalho("Empresa " + k);
+				familias.get(c).get(c).setLocalTrabalho("Empresa " + i);
 			}
 		}
+	}
+	
+	public static void printFamilias(){
+		
+	
+		
+		for (int i = 0; i < familias.size(); i++) {
+			for(int k = 0; k < familias.get(i).size(); k++){
+				System.out.println("Familia " + (i+1) + " Individuo " + (k+1)); familias.get(i).get(k).print();
+			}
+			System.out.println();
+	}
+	
 	}
 }
