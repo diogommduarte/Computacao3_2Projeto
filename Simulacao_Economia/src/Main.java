@@ -128,26 +128,25 @@ public class Main {
 		System.out.println(" numFuncionariosGov " + numFuncionariosGov);
 		int diferençaEntreContadorEFuncionariosGov = contadorIndividuos - numFuncionariosGov;
 		
-		if(diferençaEntreContadorEFuncionariosGov > 0){
+		if(diferençaEntreContadorEFuncionariosGov > 0){// se houver desempregados
 			numeroDeIndQueFaltaAlocar = diferençaEntreContadorEFuncionariosGov;
-			System.out.println("numeroDeIndQueFaltaAlocar" + numeroDeIndQueFaltaAlocar);
+			
 			while(numeroDeIndQueFaltaAlocar > 0)	
 			{
-
 				for (int i = 0; i < numEmpresas; i++) {
 					numFuncionariosEmp = 1 + r.nextInt(51); 
 					for (int k = 0; k < numFuncionariosEmp; k++) {
-						numeroDeIndQueFaltaAlocar --;
+						
 						do {
 							b = r.nextInt(familias.size());
 							c = 0;
 							if (familias.get(b).size() == 2) {
 								c = r.nextInt(2);
 							}
-							
+							numeroDeIndQueFaltaAlocar --;//nao sei se é aqui ou não
 							
 						} while (familias.get(b).get(c).getLocalTrabalho().equals("Governo") == true);
-						familias.get(b).get(c).setLocalTrabalho("Empresa " + (i+1) + "(Nº Trabalhadores: " + numFuncionariosEmp + " )");
+						familias.get(b).get(c).setLocalTrabalho("Empresa " + (i+1));
 						
 						
 						
@@ -164,7 +163,7 @@ public class Main {
 		
 		
 		
-		/*while(diferençaEmpTotal < 0) {
+		/*while(diferençaEntreContadorEFuncionariosGov == 0) {
 			System.out.println("OLA");
 			probabilidade = r.nextInt(101);
 			if (probabilidade <= 70) {
@@ -172,13 +171,13 @@ public class Main {
 				a.add(new Individuos(500 + r.nextInt(5001), ""));
 				a.add(new Individuos(500 + r.nextInt(5001), ""));
 				familias.add(a);
-				diferençaEmpTotal +=2;
+				diferençaEmpTotal +=2;//VER ESTA SITUAÇÃO
 				contadorIndividuos += 2;
 			} else {
 				a = new ArrayList<Individuos>(1);
 				a.add(new Individuos(500 + r.nextInt(5001), ""));
 				familias.add(a);
-				diferençaEmpTotal ++;
+				diferençaEmpTotal ++;//VER ESTA SITUAÇÃO
 				contadorIndividuos++;
 			}
 

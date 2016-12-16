@@ -14,5 +14,6 @@ public int getIncome() {
 	}
 
 	public abstract int gastos();
+	
 
 }
