@@ -1,11 +1,20 @@
+import java.util.ArrayList;
 public abstract class AgenteEconomico {
 	protected int income;
+	protected int contadorIncome;
 	
-	public AgenteEconomico (int income){
+	public AgenteEconomico (int income, int contadorIncome){
 		this.income=income;
+		this.contadorIncome= contadorIncome;
+	}
+	
+	public AgenteEconomico(int contadorIncome)
+	{
+		this.contadorIncome = contadorIncome;
 	}
 
-public int getIncome() {
+
+	public int getIncome() {
 		return income;
 	}
 
@@ -13,7 +22,15 @@ public int getIncome() {
 		this.income = income;
 	}
 
-	public abstract int gastos();
+	public int getContadorIncome() {
+		return contadorIncome;
+	}
+
+	public void setContadorIncome(int contadorIncome) {
+		this.contadorIncome = contadorIncome;
+	}
+
+	public abstract void destinoGasto(ArrayList<ArrayList<Individuos>> familias,ArrayList<Empresas> emps, Governo gov);
 	
 
 }

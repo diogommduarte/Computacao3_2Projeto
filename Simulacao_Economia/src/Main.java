@@ -5,13 +5,19 @@ import java.util.Scanner;
 public class Main {
 
 	static Scanner s = new Scanner(System.in);
-	static int numFamilias, numEmpresas;
+	static int numFamilias, numEmpresas, ano, trimestre;
 	static ArrayList<ArrayList<Individuos>> familias = new ArrayList<ArrayList<Individuos>>(numFamilias);
+	static ArrayList<Empresas> empresas;//onde é utilizado?
 	static Random r = new Random();
 	static int contadorIndividuos;
 	static int numFuncionariosGov;
 	static ArrayList<Individuos> a;
 	static int probabilidade;
+	static Governo governo = new Governo(0);
+	static int salario1;
+	static int salario2;
+	static int numFuncionariosEmp;
+	static int somaNumFuncionarioEmp;
 
 	public static void main(String[] args) {
 		System.out.print("Indique o numero de familias que quer criar: ");
@@ -21,8 +27,10 @@ public class Main {
 		printFamilias();
 		System.out.print("Indique o numero de empresas que quer criar: ");
 		numEmpresas = s.nextInt();
-		funcEmp();
+		empresas = criarEmpresas(numEmpresas);
+		funcEmp(empresas);
 		printFamilias();
+		printEmpresas();
 
 	}
 
@@ -32,15 +40,19 @@ public class Main {
 
 		for (int i = 0; i < numFamilias; i++) {
 			probabilidade = r.nextInt(101);
+			salario1 = 500 + r.nextInt(5001);
+			salario2 = 500 + r.nextInt(5001);
 			if (probabilidade <= 70) {
 				a = new ArrayList<Individuos>(2);
-				a.add(new Individuos(500 + r.nextInt(5001), ""));
-				a.add(new Individuos(500 + r.nextInt(5001), ""));
+				
+				a.add(new Individuos(salario1,salario1, "", i, 0));
+				a.add(new Individuos(salario2, salario2, "", i, 1));
 				familias.add(a);
 				contadorIndividuos += 2;
 			} else {
 				a = new ArrayList<Individuos>(1);
-				a.add(new Individuos(500 + r.nextInt(5001), ""));
+				
+				a.add(new Individuos(salario1, salario1, "", i, 0));
 				familias.add(a);
 				contadorIndividuos++;
 			}
@@ -64,20 +76,31 @@ public class Main {
 		while (diferençaGovTotal < 0) {
 
 			// System.out.println("diferençaGovTotal = " + diferençaGovTotal);
-			probabilidade = r.nextInt(101);
-			if (probabilidade <= 70) {
-				a = new ArrayList<Individuos>(2);
-				a.add(new Individuos(500 + r.nextInt(5001), ""));
-				a.add(new Individuos(500 + r.nextInt(5001), ""));
-				familias.add(a);
-				diferençaGovTotal += 2;
-				contadorIndividuos += 2;
-			} else {
-				a = new ArrayList<Individuos>(1);
-				a.add(new Individuos(500 + r.nextInt(5001), ""));
-				familias.add(a);
-				diferençaGovTotal++;
-				contadorIndividuos++;
+
+			int i = 0;
+
+			if (i <= familias.size()) {
+				probabilidade = r.nextInt(101);
+				salario1 = 500 + r.nextInt(5001);
+				salario2 = 500 + r.nextInt(5001);
+				if (probabilidade <= 70) {
+					a = new ArrayList<Individuos>(2);
+					
+					a.add(new Individuos(salario1, salario1, "", i, 0));
+					a.add(new Individuos(salario2, salario2, "", i, 1));
+					familias.add(a);
+					diferençaGovTotal += 2;
+					contadorIndividuos += 2;
+				} else {
+					a = new ArrayList<Individuos>(1);
+					a.add(new Individuos(salario1, salario1, "", i, 0));
+					familias.add(a);
+					diferençaGovTotal++;
+					contadorIndividuos++;
+				}
+
+				i++;
+
 			}
 
 		}
@@ -121,84 +144,113 @@ public class Main {
 
 	}
 
-	public static void funcEmp() {
-		int numFuncionariosEmp, b, c, numeroDeIndQueFaltaAlocar;
+	public static ArrayList<Empresas> criarEmpresas(int numEmpresas) {
+		ArrayList<Empresas> emps = new ArrayList<Empresas>(numEmpresas);//Nao e necessario
+		
+		for (int i = 0; i < numEmpresas; i++) {
+			numFuncionariosEmp = 1 + r.nextInt(51);
+			emps.add(new Empresas(0, 0, "Empresa " + (i+1), numFuncionariosEmp) );
+			
+			somaNumFuncionarioEmp += numFuncionariosEmp;
+
+		}
+		return emps;
+	}
+
+	public static void funcEmp(ArrayList<Empresas> emps) {
+		int b, c, numeroDeIndQueFaltaAlocar;
 
 		System.out.println("contadorIndividuos " + contadorIndividuos);
 		System.out.println(" numFuncionariosGov " + numFuncionariosGov);
 		int diferençaEntreContadorEFuncionariosGov = contadorIndividuos - numFuncionariosGov;
-		
-		if(diferençaEntreContadorEFuncionariosGov > 0){// se houver desempregados
+
+		if (diferençaEntreContadorEFuncionariosGov > 0) {
 			numeroDeIndQueFaltaAlocar = diferençaEntreContadorEFuncionariosGov;
+
 			
-			while(numeroDeIndQueFaltaAlocar > 0)	
-			{
+			while (numeroDeIndQueFaltaAlocar > 0) {
 				for (int i = 0; i < numEmpresas; i++) {
-					numFuncionariosEmp = 1 + r.nextInt(51); 
-					for (int k = 0; k < numFuncionariosEmp; k++) {
-						
+					
+					for (int k = 0; k < emps.get(i).getNumTrabalhadores() ; k++) {// <=?
+
 						do {
 							b = r.nextInt(familias.size());
 							c = 0;
 							if (familias.get(b).size() == 2) {
 								c = r.nextInt(2);
 							}
-							numeroDeIndQueFaltaAlocar --;//nao sei se é aqui ou não
-							
+
 						} while (familias.get(b).get(c).getLocalTrabalho().equals("Governo") == true);
-						familias.get(b).get(c).setLocalTrabalho("Empresa " + (i+1));
-						
-						
-						
+						familias.get(b).get(c).setLocalTrabalho("Empresa " + (i + 1));
+						numeroDeIndQueFaltaAlocar--;
 					}
-					
+
 					System.out.println("numeroDeIndQueFaltaAlocar" + numeroDeIndQueFaltaAlocar);
 				}
+
+			}
+
+		}
+
+		if(diferençaEntreContadorEFuncionariosGov == 0)
+		{
+			//System.out.println("Total Funcionarios Empresas: " + somaNumFuncionarioEmp);
 			
+			while (somaNumFuncionarioEmp > 0) {
+
+				// System.out.println("diferençaGovTotal = " + diferençaGovTotal);
+				
+				int i = 0;
+
+				if (i <= familias.size()) {
+					probabilidade = r.nextInt(101);
+					salario1 = 500 + r.nextInt(5001);
+					salario2 = 500 + r.nextInt(5001);
+					if (probabilidade <= 70) {
+						a = new ArrayList<Individuos>(2);
+						
+						a.add(new Individuos(salario1, salario1, "", i, 0));
+						a.add(new Individuos(salario2, salario2, "", i, 1));
+						familias.add(a);
+						
+						somaNumFuncionarioEmp -= 2;
+					} else {
+						a = new ArrayList<Individuos>(1);
+						a.add(new Individuos(salario1, salario1, "", i, 0));
+						familias.add(a);
+						
+						somaNumFuncionarioEmp--;
+					}
+
+					i++;
+
+				}
+
 			}
 			
+			
+			for (int i = 0; i < numEmpresas; i++) {
+				
+				for (int k = 0; k < empresas.get(i).getNumTrabalhadores() ; k++) {// <=?
+
+					do {
+						b = r.nextInt(familias.size());
+						c = 0;
+						if (familias.get(b).size() == 2) {
+							c = r.nextInt(2);
+						}
+
+					} while (familias.get(b).get(c).getLocalTrabalho().equals("") == false);
+					familias.get(b).get(c).setLocalTrabalho("Empresa " + (i + 1));
+					
+				}
+
+				
+			}
 			
 		}
-			
 		
 		
-		
-		/*while(diferençaEntreContadorEFuncionariosGov == 0) {
-			System.out.println("OLA");
-			probabilidade = r.nextInt(101);
-			if (probabilidade <= 70) {
-				a = new ArrayList<Individuos>(2);
-				a.add(new Individuos(500 + r.nextInt(5001), ""));
-				a.add(new Individuos(500 + r.nextInt(5001), ""));
-				familias.add(a);
-				diferençaEmpTotal +=2;//VER ESTA SITUAÇÃO
-				contadorIndividuos += 2;
-			} else {
-				a = new ArrayList<Individuos>(1);
-				a.add(new Individuos(500 + r.nextInt(5001), ""));
-				familias.add(a);
-				diferençaEmpTotal ++;//VER ESTA SITUAÇÃO
-				contadorIndividuos++;
-			}
-
-		}*/
-
-		/*	for (int i = 0; i < numFuncionariosGov; i++) {
-			do {
-				b = r.nextInt(familias.size());
-				c = 0;
-				if (familias.get(b).size() == 2) {
-					c = r.nextInt(2);
-				}
-			} while (familias.get(b).get(c).getLocalTrabalho().equals("") == false);
-			familias.get(b).get(c).setLocalTrabalho("Governo");*/
-		
-		
-			
-		
-
-		
-
 	}
 
 	public static void printFamilias() {
@@ -210,6 +262,17 @@ public class Main {
 				familias.get(i).get(k).print();
 			}
 			System.out.println();
+		}
+
+	}
+	
+	public static void printEmpresas() {
+
+		for (int i = 0; i < empresas.size(); i++) {
+			
+			empresas.get(i).print();
+			
+			
 		}
 
 	}
