@@ -70,8 +70,8 @@ public class Main {
 
 	public static void funcionariosGov() {
 		int b, c;
-		//numFuncionariosGov = 100 + r.nextInt(401);
-		numFuncionariosGov = 120;
+		numFuncionariosGov = 100 + r.nextInt(401);
+		
 
 		System.out.println("***Criação do Governo***");
 		System.out.println("Individuos do governo -> " + numFuncionariosGov + "(gerado aleatóriamente)");
