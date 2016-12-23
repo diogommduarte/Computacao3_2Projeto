@@ -21,6 +21,7 @@ public class Main {
 	static int numeroDesempregadosDepoisGov;
 	static int minimoInteiro;
 	static int contadorFuncionariosEmp;
+	
 
 	public static void main(String[] args) {
 		System.out.println("***CONSTRUÇÃO DA ECONOMIA***\n");
@@ -71,7 +72,7 @@ public class Main {
 	public static void funcionariosGov() {
 		int b, c;
 		numFuncionariosGov = 100 + r.nextInt(401);
-		
+		//numFuncionariosGov = 100;
 
 		System.out.println("***Criação do Governo***");
 		System.out.println("Individuos do governo -> " + numFuncionariosGov + "(gerado aleatóriamente)");
@@ -122,7 +123,7 @@ public class Main {
 
 	public static void numeroEmpresas() {
 
-		if (numeroDesempregadosDepoisGov % 50 == 0) {
+		if (numeroDesempregadosDepoisGov% 50 == 0) {
 			minimoInteiro = (int)(numeroDesempregadosDepoisGov / 50);
 			do {
 				System.out.print("Indique o numero de empresas que quer criar (entre "+ (int) (numeroDesempregadosDepoisGov / 50) + ", " + numeroDesempregadosDepoisGov + ") ->");
@@ -367,7 +368,30 @@ public class Main {
 		
 		else{
 			
+			int numeroDesempregadosDepoisGovDes = numeroDesempregadosDepoisGov;
 			
+			for(int i = 0; i < numEmpresas; i++)
+			{
+				
+				if(i == (numEmpresas-1)){
+					numFuncionariosEmp = numeroDesempregadosDepoisGovDes;
+				}
+				
+				else if(numeroDesempregadosDepoisGovDes > 50 + numEmpresas)
+				{
+					numFuncionariosEmp = 1+r.nextInt(51);
+				}
+				
+				
+				else
+				{
+					numFuncionariosEmp = 1 + r.nextInt(numeroDesempregadosDepoisGovDes - (numEmpresas - i));
+				}
+				emps.add(new Empresas(0, 0, "Empresa " + (i+1), numFuncionariosEmp));
+				numeroDesempregadosDepoisGovDes -= numFuncionariosEmp;
+				
+			}
+		
 			
 		}
 			
