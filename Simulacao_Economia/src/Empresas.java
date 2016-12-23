@@ -75,7 +75,7 @@ public class Empresas extends AgenteEconomico{
 	
 	public void print() {
 
-		System.out.println(getNome() +" Salário -> " + income + "€" + " /" + " ValorGastar -> " + contadorIncome + "€" + " /NumFuncionarios -> " + numTrabalhadores);
+		System.out.println(getNome() + ": NumFuncionarios -> " + numTrabalhadores);
 	}
 
 

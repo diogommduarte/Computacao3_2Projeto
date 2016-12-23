@@ -18,19 +18,20 @@ public class Main {
 	static int salario2;
 	static int numFuncionariosEmp;
 	static int somaNumFuncionarioEmp;
+	static int numeroDesempregadosDepoisGov;
+	static int minimoInteiro;
+	static int contadorFuncionariosEmp;
 
 	public static void main(String[] args) {
 		System.out.println("***CONSTRUÇÃO DA ECONOMIA***\n");
 		System.out.print("Indique o número de famílias que deseja criar: ");
 		numFamilias = s.nextInt();
 		criarFamilias();
-		funcionariosGov();//esta bonito ate aqui
-		
-		System.out.print("Indique o numero de empresas que quer criar: ");
-		numEmpresas = s.nextInt();
+		funcionariosGov();// esta bonito ate aqui
+		numeroEmpresas();
 		empresas = criarEmpresas(numEmpresas);
-		funcEmp(empresas);
-		//printFamilias();
+		// funcionariosEmp(empresas);
+		// printFamilias();
 		printEmpresas();
 
 	}
@@ -61,30 +62,30 @@ public class Main {
 
 		System.out.println("\nNúmero de individuos -> " + contadorIndividuos);
 
-		System.out.println("Número de Familias -> " + familias.size()+ "\n");
-		
+		System.out.println("Número de Familias -> " + familias.size() + "\n");
+
 		printFamilias();
 
 	}
 
 	public static void funcionariosGov() {
 		int b, c;
-		numFuncionariosGov = 100 + r.nextInt(401);
-		
+		//numFuncionariosGov = 100 + r.nextInt(401);
+		numFuncionariosGov = 120;
+
 		System.out.println("***Criação do Governo***");
 		System.out.println("Individuos do governo -> " + numFuncionariosGov + "(gerado aleatóriamente)");
-		System.out.println("\nSe o número de individuos do governo é maior que o número de individuos, o sistema irá criar ");
-		System.out.println("familías e individuos de modo a que haja individuos suficientes para trabalhar no governo!\n");
-		
-	
+		System.out.println(
+				"\nSe o número de individuos do governo é maior que o número de individuos, o sistema irá criar ");
+		System.out.println(
+				"familías e individuos de modo a que haja individuos suficientes para trabalhar no governo!\n");
+
 		criarFamiliasGov();
-		
-		
+
 		System.out.println("Número de Familias depois da funcionariosGov -> " + familias.size());
 		System.out.println("\nNúmero total de individuos depois da funcionariosGov -> " + contadorIndividuos + "\n");
 
 		apagarIndGov();
-		
 
 		for (int i = 0; i < numFuncionariosGov; i++) {
 			do {
@@ -97,140 +98,164 @@ public class Main {
 			familias.get(b).get(c).setLocalTrabalho("Governo");
 
 		}
-		
+
+		if (contadorIndividuos > numFuncionariosGov) {
+
+			for (int k = 0; k < familias.size(); k++) {
+				for (int j = 0; j < familias.get(k).size(); j++) {
+					if (familias.get(k).get(j).getLocalTrabalho().equals("")) {
+						numeroDesempregadosDepoisGov++;
+					}
+				}
+			}
+		}
+
+		System.out.println("Número de individuos desempregados -> " + numeroDesempregadosDepoisGov);
+
 		printFamilias();
 
 	}
 
-	public static ArrayList<Empresas> criarEmpresas(int numEmpresas) {
-		ArrayList<Empresas> emps = new ArrayList<Empresas>(numEmpresas);// Nao e
-																		// necessario
+	public static void funcionariosEmp(ArrayList<Empresas> emps) {
 
-		for (int i = 0; i < numEmpresas; i++) {
-			numFuncionariosEmp = 1 + r.nextInt(51);
-			emps.add(new Empresas(0, 0, "Empresa " + (i + 1), numFuncionariosEmp));
+	}
 
-			somaNumFuncionarioEmp += numFuncionariosEmp;
+	public static void numeroEmpresas() {
+
+		if (numeroDesempregadosDepoisGov % 50 == 0) {
+			minimoInteiro = (int)(numeroDesempregadosDepoisGov / 50);
+			do {
+				System.out.print("Indique o numero de empresas que quer criar (entre "+ (int) (numeroDesempregadosDepoisGov / 50) + ", " + numeroDesempregadosDepoisGov + ") ->");
+				numEmpresas = s.nextInt();
+			} while (numEmpresas < minimoInteiro|| numEmpresas > numeroDesempregadosDepoisGov);
 
 		}
-		return emps;
+
+		else {
+			minimoInteiro = (((int)(numeroDesempregadosDepoisGov / 50)) + 1);
+			do {
+				System.out.print("Indique o numero de empresas que quer criar (entre "+ (((int) (numeroDesempregadosDepoisGov / 50)) + 1) + ", " + numeroDesempregadosDepoisGov+ ") ->");
+				numEmpresas = s.nextInt();
+			} while (numEmpresas < minimoInteiro|| numEmpresas > numeroDesempregadosDepoisGov);
+
+		}
 	}
 
 	public static void funcEmp(ArrayList<Empresas> emps) {
-		int b, c, numeroDeIndQueFaltaAlocar;
-		System.out.println("");
-		// System.out.println("contadorIndividuos " + contadorIndividuos);
-		// System.out.println(" numFuncionariosGov " + numFuncionariosGov);
-		int diferençaEntreContadorEFuncionariosGov = contadorIndividuos - numFuncionariosGov;
-
-		/*if (diferençaEntreContadorEFuncionariosGov > 0) {
-			numeroDeIndQueFaltaAlocar = diferençaEntreContadorEFuncionariosGov;
-
-			while (numeroDeIndQueFaltaAlocar > 0) {
-				for (int i = 0; i < numEmpresas; i++) {
-
-					for (int k = 0; k < emps.get(i).getNumTrabalhadores(); k++) {// <=?
-
-						do {
-							b = r.nextInt(familias.size());
-							c = 0;
-							if (familias.get(b).size() == 2) {
-								c = r.nextInt(2);
-							}
-
-						} while (familias.get(b).get(c).getLocalTrabalho().equals("Governo") == true);
-						familias.get(b).get(c).setLocalTrabalho("Empresa " + (i + 1));
-						numeroDeIndQueFaltaAlocar--;
-					}
-
-					System.out.println("numeroDeIndQueFaltaAlocar" + numeroDeIndQueFaltaAlocar);
-				}
-
-			}
-
-		}*/
-
-		if (diferençaEntreContadorEFuncionariosGov == 0) {
-			// System.out.println("Total Funcionarios Empresas: " +
-			// somaNumFuncionarioEmp);
-
-			while (somaNumFuncionarioEmp > 0) {
-
-				// System.out.println("diferençaGovTotal = " +
-				// diferençaGovTotal);
-
-				int i = 0;
-
-				if (i <= familias.size()) {
-					probabilidade = r.nextInt(101);
-					salario1 = 500 + r.nextInt(5001);
-					salario2 = 500 + r.nextInt(5001);
-					if (probabilidade <= 70) {
-						a = new ArrayList<Individuos>(2);
-
-						a.add(new Individuos(salario1, salario1, "", i, 0));
-						a.add(new Individuos(salario2, salario2, "", i, 1));
-						familias.add(a);
-						contadorIndividuos += 2;
-						somaNumFuncionarioEmp -= 2;
-					} else {
-						a = new ArrayList<Individuos>(1);
-						a.add(new Individuos(salario1, salario1, "", i, 0));
-						familias.add(a);
-						contadorIndividuos++;
-						somaNumFuncionarioEmp--;
-					}
-
-					i++;
-
-				}
-
-			}
-
-			for (int i = 0; i < numEmpresas; i++) {
-
-				for (int k = 0; k < empresas.get(i).getNumTrabalhadores(); k++) {// <=?
-
-					do {
-						b = r.nextInt(familias.size());
-						c = 0;
-						if (familias.get(b).size() == 2) {
-							c = r.nextInt(2);
-						}
-
-					} while (familias.get(b).get(c).getLocalTrabalho().equals("") == false);
-					familias.get(b).get(c).setLocalTrabalho("Empresa " + (i + 1));
-
-				}
-
-			}
-
-			
-			
-			if (contadorIndividuos != (numFuncionariosGov + numFuncionariosEmp)) {
-
-				for (int g = 0; g < familias.size(); g++) {
-					for (int d = 0; d < familias.get(g).size(); d++) {
-						if (familias.get(g).get(d).getLocalTrabalho().equals("") && familias.get(g).size() == 2) {
-							familias.get(g).remove(d);
-							contadorIndividuos--;
-							break;
-					
-						}
-						
-						else{
-							familias.remove(g);
-							contadorIndividuos--;
-							break;
-						}
-					}
-				}
-
-			}
-
-			
-		}
-
+		// int b, c, numeroDeIndQueFaltaAlocar;
+		// System.out.println("");
+		// // System.out.println("contadorIndividuos " + contadorIndividuos);
+		// // System.out.println(" numFuncionariosGov " + numFuncionariosGov);
+		// int diferençaEntreContadorEFuncionariosGov = contadorIndividuos -
+		// numFuncionariosGov;
+		//
+		//// if (diferençaEntreContadorEFuncionariosGov > 0) {
+		//// numeroDeIndQueFaltaAlocar = diferençaEntreContadorEFuncionariosGov;
+		////
+		//// while (numeroDeIndQueFaltaAlocar > 0) { for (int i = 0; i <
+		//// numEmpresas; i++) {
+		////
+		//// for (int k = 0; k < emps.get(i).getNumTrabalhadores(); k++) {// <=?
+		////
+		//// do { b = r.nextInt(familias.size()); c = 0; if
+		//// (familias.get(b).size() == 2) { c = r.nextInt(2); }
+		////
+		//// } while
+		// (familias.get(b).get(c).getLocalTrabalho().equals("Governo")
+		//// == true); familias.get(b).get(c).setLocalTrabalho("Empresa " + (i +
+		//// 1)); numeroDeIndQueFaltaAlocar--; }
+		////
+		//// System.out.println("numeroDeIndQueFaltaAlocar" +
+		//// numeroDeIndQueFaltaAlocar); }
+		////
+		//// }
+		////
+		//// }
+		//
+		//
+		// if (diferençaEntreContadorEFuncionariosGov == 0) {
+		// // System.out.println("Total Funcionarios Empresas: " +
+		// // somaNumFuncionarioEmp);
+		//
+		// while (somaNumFuncionarioEmp > 0) {
+		//
+		// // System.out.println("diferençaGovTotal = " +
+		// // diferençaGovTotal);
+		//
+		// int i = 0;
+		//
+		// if (i <= familias.size()) {
+		// probabilidade = r.nextInt(101);
+		// salario1 = 500 + r.nextInt(5001);
+		// salario2 = 500 + r.nextInt(5001);
+		// if (probabilidade <= 70) {
+		// a = new ArrayList<Individuos>(2);
+		//
+		// a.add(new Individuos(salario1, salario1, "", i, 0));
+		// a.add(new Individuos(salario2, salario2, "", i, 1));
+		// familias.add(a);
+		// contadorIndividuos += 2;
+		// somaNumFuncionarioEmp -= 2;
+		// } else {
+		// a = new ArrayList<Individuos>(1);
+		// a.add(new Individuos(salario1, salario1, "", i, 0));
+		// familias.add(a);
+		// contadorIndividuos++;
+		// somaNumFuncionarioEmp--;
+		// }
+		//
+		// i++;
+		//
+		// }
+		//
+		// }
+		//
+		// for (int i = 0; i < numEmpresas; i++) {
+		//
+		// for (int k = 0; k < empresas.get(i).getNumTrabalhadores(); k++) {//
+		// <=?
+		//
+		// do {
+		// b = r.nextInt(familias.size());
+		// c = 0;
+		// if (familias.get(b).size() == 2) {
+		// c = r.nextInt(2);
+		// }
+		//
+		// } while (familias.get(b).get(c).getLocalTrabalho().equals("") ==
+		// false);
+		// familias.get(b).get(c).setLocalTrabalho("Empresa " + (i + 1));
+		//
+		// }
+		//
+		// }
+		//
+		// if (contadorIndividuos != (numFuncionariosGov + numFuncionariosEmp))
+		// {
+		//
+		// for (int g = 0; g < familias.size(); g++) {
+		// for (int d = 0; d < familias.get(g).size(); d++) {
+		// if (familias.get(g).get(d).getLocalTrabalho().equals("") &&
+		// familias.get(g).size() == 2) {
+		// familias.get(g).remove(d);
+		// contadorIndividuos--;
+		//
+		// }
+		//
+		// else {
+		// familias.remove(g);
+		// contadorIndividuos--;
+		//
+		// }
+		// }
+		// }
+		//
+		// }
+		//
+		// printFamilias();
+		//
+		// }
+		//
 	}
 
 	public static void printFamilias() {
@@ -257,13 +282,11 @@ public class Main {
 		System.out.println("Número Total de Individuos na Economia -> " + contadorIndividuos);
 
 	}
-	
-	public static void criarFamiliasGov(){
+
+	public static void criarFamiliasGov() {
 		int diferençaGovTotal = contadorIndividuos - numFuncionariosGov;
 
 		while (diferençaGovTotal < 0) {
-
-			 
 
 			int i = 0;
 
@@ -293,13 +316,80 @@ public class Main {
 
 		}
 	}
-	
-	public static void apagarIndGov(){
+
+	public static ArrayList<Empresas> criarEmpresas(int numEmpresas) {
+		ArrayList<Empresas> emps = new ArrayList<Empresas>(numEmpresas);
+
 		
+		
+		
+		if (numEmpresas == numeroDesempregadosDepoisGov) {
+
+			for (int i = 0; i < numEmpresas; i++) {
+				numFuncionariosEmp = 1;
+				emps.add(new Empresas(0, 0, "Empresa " + (i + 1), numFuncionariosEmp));
+			}
+			
+			return emps;
+			
+		}
+		
+		
+		
+		else if(numEmpresas == minimoInteiro)
+		{
+			contadorFuncionariosEmp = numeroDesempregadosDepoisGov;
+			for(int k = 0; k < numEmpresas; k++)
+			{
+				
+				numFuncionariosEmp = 50;
+				
+				if(contadorFuncionariosEmp > 50)
+				{
+					emps.add(new Empresas(0, 0, "Empresa " + (k+1), numFuncionariosEmp));
+					contadorFuncionariosEmp -= numFuncionariosEmp;
+				}
+				else if(contadorFuncionariosEmp < 50)
+				{
+					emps.add(new Empresas(0, 0, "Empresa " + (k+1),contadorFuncionariosEmp));
+				}
+				else if(numeroDesempregadosDepoisGov < 50){
+					emps.add(new Empresas(0, 0, "Empresa " + (k+1),numeroDesempregadosDepoisGov));
+				}
+				}
+					
+			
+				
+				return emps;
+				
+			}
+		
+		
+		else{
+			
+			
+			
+		}
+			
+			return emps;
+			
+		
+	}
+
+	public static void apagarIndGov() {
+
 		if (contadorIndividuos == (numFuncionariosGov + 1)) {
 			if (familias.get(familias.size() - 1).size() == 2) {
 				familias.get(familias.size() - 1).remove(1);
 				contadorIndividuos--;
+
+				System.out.println(
+						"Número de Famílias depois da funcionariosGov e depois de apagar o individuo excdentário:: "
+								+ familias.size());
+
+				System.out.println(
+						"\nNúmero total de individuos depois da funcionariosGov e depois de apagar o individuo excdentário: "
+								+ contadorIndividuos);
 
 			}
 
@@ -307,16 +397,18 @@ public class Main {
 				familias.remove(familias.size() - 1);
 				contadorIndividuos--;
 
+				System.out.println(
+						"Número de Famílias depois da funcionariosGov e depois de apagar o individuo excdentário:: "
+								+ familias.size());
+
+				System.out.println(
+						"\nNúmero total de individuos depois da funcionariosGov e depois de apagar o individuo excdentário: "
+								+ contadorIndividuos + "\n");
+
 			}
 
-			
-			System.out.println("Número de Famílias depois da funcionariosGov e depois de apagar o individuo excdentário:: "+ familias.size());
-			
-			System.out.println("\nNúmero total de individuos depois da funcionariosGov e depois de apagar o individuo excdentário: "+ contadorIndividuos);
-					
-					
 		}
-		
+
 	}
-	
+
 }
