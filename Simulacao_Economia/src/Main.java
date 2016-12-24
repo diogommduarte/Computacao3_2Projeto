@@ -21,7 +21,6 @@ public class Main {
 	static int numeroDesempregadosDepoisGov;
 	static int minimoInteiro;
 	static int contadorFuncionariosEmp;
-	
 
 	public static void main(String[] args) {
 		System.out.println("***CONSTRUÇÃO DA ECONOMIA***\n");
@@ -43,8 +42,8 @@ public class Main {
 
 		for (int i = 0; i < numFamilias; i++) {
 			probabilidade = r.nextInt(101);
-			salario1 = 500 + r.nextInt(5001);
-			salario2 = 500 + r.nextInt(5001);
+			salario1 = 500 + r.nextInt(5000);
+			salario2 = 500 + r.nextInt(5000);
 			if (probabilidade <= 70) {
 				a = new ArrayList<Individuos>(2);
 
@@ -71,8 +70,8 @@ public class Main {
 
 	public static void funcionariosGov() {
 		int b, c;
-		numFuncionariosGov = 100 + r.nextInt(401);
-		//numFuncionariosGov = 100;
+		numFuncionariosGov = 100 + r.nextInt(400);
+		// numFuncionariosGov = 100;
 
 		System.out.println("***Criação do Governo***");
 		System.out.println("Individuos do governo -> " + numFuncionariosGov + "(gerado aleatóriamente)");
@@ -123,21 +122,24 @@ public class Main {
 
 	public static void numeroEmpresas() {
 
-		if (numeroDesempregadosDepoisGov% 50 == 0) {
-			minimoInteiro = (int)(numeroDesempregadosDepoisGov / 50);
+		if (numeroDesempregadosDepoisGov % 50 == 0) {
+			minimoInteiro = (int) (numeroDesempregadosDepoisGov / 50);
 			do {
-				System.out.print("Indique o numero de empresas que quer criar (entre "+ (int) (numeroDesempregadosDepoisGov / 50) + ", " + numeroDesempregadosDepoisGov + ") ->");
+				System.out.print("Indique o numero de empresas que quer criar (entre "
+						+ (int) (numeroDesempregadosDepoisGov / 50) + ", " + numeroDesempregadosDepoisGov + ") ->");
 				numEmpresas = s.nextInt();
-			} while (numEmpresas < minimoInteiro|| numEmpresas > numeroDesempregadosDepoisGov);
+			} while (numEmpresas < minimoInteiro || numEmpresas > numeroDesempregadosDepoisGov);
 
 		}
 
 		else {
-			minimoInteiro = (((int)(numeroDesempregadosDepoisGov / 50)) + 1);
+			minimoInteiro = (((int) (numeroDesempregadosDepoisGov / 50)) + 1);
 			do {
-				System.out.print("Indique o numero de empresas que quer criar (entre "+ (((int) (numeroDesempregadosDepoisGov / 50)) + 1) + ", " + numeroDesempregadosDepoisGov+ ") ->");
+				System.out.print("Indique o numero de empresas que quer criar (entre "
+						+ (((int) (numeroDesempregadosDepoisGov / 50)) + 1) + ", " + numeroDesempregadosDepoisGov
+						+ ") ->");
 				numEmpresas = s.nextInt();
-			} while (numEmpresas < minimoInteiro|| numEmpresas > numeroDesempregadosDepoisGov);
+			} while (numEmpresas < minimoInteiro || numEmpresas > numeroDesempregadosDepoisGov);
 
 		}
 	}
@@ -293,8 +295,8 @@ public class Main {
 
 			if (i <= familias.size()) {
 				probabilidade = r.nextInt(101);
-				salario1 = 500 + r.nextInt(5001);
-				salario2 = 500 + r.nextInt(5001);
+				salario1 = 500 + r.nextInt(5000);
+				salario2 = 500 + r.nextInt(5000);
 				if (probabilidade <= 70) {
 					a = new ArrayList<Individuos>(2);
 
@@ -321,83 +323,75 @@ public class Main {
 	public static ArrayList<Empresas> criarEmpresas(int numEmpresas) {
 		ArrayList<Empresas> emps = new ArrayList<Empresas>(numEmpresas);
 
-		
-		
-		
 		if (numEmpresas == numeroDesempregadosDepoisGov) {
 
 			for (int i = 0; i < numEmpresas; i++) {
 				numFuncionariosEmp = 1;
 				emps.add(new Empresas(0, 0, "Empresa " + (i + 1), numFuncionariosEmp));
 			}
-			
+
 			return emps;
-			
+
 		}
-		
-		
-		
-		else if(numEmpresas == minimoInteiro)
-		{
+
+		else if (numEmpresas == minimoInteiro) {
 			contadorFuncionariosEmp = numeroDesempregadosDepoisGov;
-			for(int k = 0; k < numEmpresas; k++)
-			{
-				
+			for (int k = 0; k < numEmpresas; k++) {
+
 				numFuncionariosEmp = 50;
-				
-				if(contadorFuncionariosEmp > 50)
-				{
-					emps.add(new Empresas(0, 0, "Empresa " + (k+1), numFuncionariosEmp));
+
+				if (contadorFuncionariosEmp > 50) {
+					emps.add(new Empresas(0, 0, "Empresa " + (k + 1), numFuncionariosEmp));
 					contadorFuncionariosEmp -= numFuncionariosEmp;
+				} else if (contadorFuncionariosEmp < 50) {
+					emps.add(new Empresas(0, 0, "Empresa " + (k + 1), contadorFuncionariosEmp));
+				} else if (numeroDesempregadosDepoisGov < 50) {
+					emps.add(new Empresas(0, 0, "Empresa " + (k + 1), numeroDesempregadosDepoisGov));
 				}
-				else if(contadorFuncionariosEmp < 50)
-				{
-					emps.add(new Empresas(0, 0, "Empresa " + (k+1),contadorFuncionariosEmp));
-				}
-				else if(numeroDesempregadosDepoisGov < 50){
-					emps.add(new Empresas(0, 0, "Empresa " + (k+1),numeroDesempregadosDepoisGov));
-				}
-				}
-					
-			
-				
-				return emps;
-				
 			}
-		
-		
-		else{
-			
+
+			return emps;
+
+		}
+
+		else {
+
 			int numeroDesempregadosDepoisGovDes = numeroDesempregadosDepoisGov;
 			
-			for(int i = 0; i < numEmpresas; i++)
-			{
-				
-				if(i == (numEmpresas-1)){
-					numFuncionariosEmp = numeroDesempregadosDepoisGovDes;
+			for (int i = 0; i < numEmpresas; i++) {
+
+				if (i == (numEmpresas - 1)) {
+					int modulus = (int)(numeroDesempregadosDepoisGovDes / 50);
+					for (int k = 0 ; k< modulus; k++) {
+						numFuncionariosEmp = 50;
+						emps.add(new Empresas(0, 0, "Empresa " + (emps.size() +1) , numFuncionariosEmp));
+					}
+					if(numeroDesempregadosDepoisGovDes - (50 * modulus) > 0)
+					{
+					      numFuncionariosEmp = numeroDesempregadosDepoisGovDes - (50 * modulus);
+					      
+					}
+					
+					System.out.println(" O sistema criou automaticamente " + (modulus) + " empresas para que não houvesse pessoas desempregadas");
+
 				}
-				
-				else if(numeroDesempregadosDepoisGovDes > 50 + numEmpresas)
-				{
-					numFuncionariosEmp = 1+r.nextInt(51);
+
+				else if (numeroDesempregadosDepoisGovDes > 50 + numEmpresas) {
+					numFuncionariosEmp = 1 + r.nextInt(50);
 				}
-				
-				
-				else
-				{
+
+				else {
 					numFuncionariosEmp = 1 + r.nextInt(numeroDesempregadosDepoisGovDes - (numEmpresas - i));
 				}
-				emps.add(new Empresas(0, 0, "Empresa " + (i+1), numFuncionariosEmp));
+				emps.add(new Empresas(0, 0, "Empresa " + (emps.size() +1) , numFuncionariosEmp));
 				numeroDesempregadosDepoisGovDes -= numFuncionariosEmp;
-				
+
 			}
-		
-			
+
 		}
-			
-			return emps;
-			
-		
+
+		return emps;
+
 	}
 
 	public static void apagarIndGov() {
