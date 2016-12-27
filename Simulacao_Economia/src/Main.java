@@ -21,18 +21,40 @@ public class Main {
 	static int numeroDesempregadosDepoisGov;
 	static int minimoInteiro;
 	static int contadorFuncionariosEmp;
+	static int numeroDesempregadosDepoisGovDes;
+	static int repeteProcesso;
 
 	public static void main(String[] args) {
 		System.out.println("***CONSTRUÇÃO DA ECONOMIA***\n");
 		System.out.print("Indique o número de famílias que deseja criar: ");
 		numFamilias = s.nextInt();
 		criarFamilias();
-		funcionariosGov();// esta bonito ate aqui
-		numeroEmpresas();
-		empresas = criarEmpresas(numEmpresas);
-		// funcionariosEmp(empresas);
-		// printFamilias();
-		printEmpresas();
+		funcionariosGov();
+		
+		do{
+		
+			if(numeroDesempregadosDepoisGov == 0)
+			{
+				System.out.println("A economia não tem empresas porque todos os individuos disponiveis trabalham no Governo.\n Se desejar criar uma outra economia com empresas insira 1, se deseja continuar insira qualquer outra tecla");
+				repeteProcesso = s.nextInt();
+				//É PRECISO DAR RESET AOS ARRAYLIST
+			
+				familias.clear();
+				System.out.println("Familias: \n");
+				printFamilias();
+				main(args);
+			}
+			
+			else{
+				repeteProcesso = 2;
+				numeroEmpresas();
+				empresas = criarEmpresas(numEmpresas);
+				funcionariosEmp(empresas);
+				printFamilias();
+				printEmpresas();
+				System.out.println("Número de desempregados depois da alocação dos individuos nas empresas -> " + numeroDesempregadosDepoisGovDes);
+			}
+		}while(repeteProcesso == 1);
 
 	}
 
@@ -118,8 +140,27 @@ public class Main {
 
 	public static void funcionariosEmp(ArrayList<Empresas> emps) {
 
-	}
+		
+		
+			int b,c;
+			for(int k = 0; k < numEmpresas; k++){
+			for (int i = 0; i < empresas.get(k).getNumTrabalhadores(); i++) {
+				do {
+					b = r.nextInt(familias.size());
+					c = 0;
+					if (familias.get(b).size() == 2) {
+						c = r.nextInt(2);
+					}
+				} while (familias.get(b).get(c).getLocalTrabalho().equals("") == false);
+				familias.get(b).get(c).setLocalTrabalho("Empresa " + (k+1));
 
+			}
+			}
+			
+			System.out.println("Número de desempregados antes da alocação dos individuos nas empresas -> " + numeroDesempregadosDepoisGov);
+			
+		}
+	
 	public static void numeroEmpresas() {
 
 		if (numeroDesempregadosDepoisGov % 50 == 0) {
@@ -356,7 +397,7 @@ public class Main {
 
 		else {
 
-			int numeroDesempregadosDepoisGovDes = numeroDesempregadosDepoisGov;
+			numeroDesempregadosDepoisGovDes = numeroDesempregadosDepoisGov;
 			
 			for (int i = 0; i < numEmpresas; i++) {
 
@@ -429,4 +470,5 @@ public class Main {
 
 	}
 
+	
 }
