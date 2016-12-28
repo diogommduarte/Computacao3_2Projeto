@@ -61,6 +61,11 @@ public class Individuos extends AgenteEconomico {
 			
 			familias.get(fam).get(ind).setContadorIncome(familias.get(fam).get(ind).getContadorIncome()+ gasto);
 			gov.setContadorIncome(txGov);
+			if(this.getContadorIncome() < 10){
+				familias.get(fam).get(ind).setContadorIncome(familias.get(fam).get(ind).getContadorIncome() + this.contadorIncome);
+				gov.setContadorIncome((int)(this.getContadorIncome() * 0.25));
+				this.setContadorIncome(this.getContadorIncome() - this.getContadorIncome());
+			}
 			this.setContadorIncome(this.getContadorIncome()-10);
 		}
 		
@@ -72,6 +77,11 @@ public class Individuos extends AgenteEconomico {
 			}while(this.getLocalTrabalho().equals(emps.get(escolha).getNome()));
 			emps.get(escolha).setContadorIncome(emps.get(escolha).getContadorIncome()+ gasto);
 			gov.setContadorIncome(txGov);
+			if(this.getContadorIncome()<10){
+				emps.get(escolha).setContadorIncome(emps.get(escolha).getContadorIncome()+ this.getContadorIncome());
+				gov.setContadorIncome((int)(this.getContadorIncome()*0.25));
+				this.setContadorIncome(this.getContadorIncome()-this.getContadorIncome());
+			}
 			this.setContadorIncome(this.getContadorIncome()-10);
 		}
 
@@ -106,6 +116,10 @@ public class Individuos extends AgenteEconomico {
 		else{
 		return (int)(0.5*income);
 		}
+	}
+	
+	public void receberSalario(){
+		this.contadorIncome += calculoValorGastar(this.income);
 	}
 	
 

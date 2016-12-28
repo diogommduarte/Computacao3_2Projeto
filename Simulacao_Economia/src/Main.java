@@ -7,7 +7,7 @@ public class Main {
 	static Scanner s = new Scanner(System.in);
 	static int numFamilias, numEmpresas, ano, trimestre;
 	static ArrayList<ArrayList<Individuos>> familias = new ArrayList<ArrayList<Individuos>>(numFamilias);
-	static ArrayList<Empresas> empresas;// onde é utilizado?
+	static ArrayList<Empresas> empresas;// onde é utilizado
 	static Random r = new Random();
 	static int contadorIndividuos;
 	static int numFuncionariosGov;
@@ -23,6 +23,9 @@ public class Main {
 	static int contadorFuncionariosEmp;
 	static int numeroDesempregadosDepoisGovDes;
 	static int repeteProcesso;
+	static int selecaoMenu;
+	static String numTemp;
+	static int numMesesPassados;
 
 	public static void main(String[] args) {
 		System.out.println("***CONSTRUÇÃO DA ECONOMIA***\n");
@@ -30,31 +33,60 @@ public class Main {
 		numFamilias = s.nextInt();
 		criarFamilias();
 		funcionariosGov();
-		
-		do{
-		
-			if(numeroDesempregadosDepoisGov == 0)
-			{
-				System.out.println("A economia não tem empresas porque todos os individuos disponiveis trabalham no Governo.\n Se desejar criar uma outra economia com empresas insira 1, se deseja continuar insira qualquer outra tecla");
+
+		do {
+
+			if (numeroDesempregadosDepoisGov == 0) {
+				System.out.println(
+						"A economia não tem empresas porque todos os individuos disponiveis trabalham no Governo.\n Se desejar criar uma outra economia com empresas insira 1, se deseja continuar insira qualquer outra tecla");
 				repeteProcesso = s.nextInt();
-				//É PRECISO DAR RESET AOS ARRAYLIST
-			
+				// É PRECISO DAR RESET AOS ARRAYLIST
+
 				familias.clear();
 				System.out.println("Familias: \n");
 				printFamilias();
 				main(args);
 			}
-			
-			else{
+
+			else {
 				repeteProcesso = 2;
 				numeroEmpresas();
 				empresas = criarEmpresas(numEmpresas);
-				funcionariosEmp(empresas);
+				funcionariosEmp();
 				printFamilias();
 				printEmpresas();
-				System.out.println("Número de desempregados depois da alocação dos individuos nas empresas -> " + numeroDesempregadosDepoisGovDes);
+				System.out.println("Número de desempregados depois da alocação dos individuos nas empresas -> "
+						+ numeroDesempregadosDepoisGovDes);
 			}
-		}while(repeteProcesso == 1);
+		} while (repeteProcesso == 1);
+
+		do {
+			System.out.println("\n*** MENU DA ECONOMIA ***");
+			System.out.println("1 - Avançar no Tempo");
+			System.out.println("2 - Mostrar Estatisticas (Média e Mediana)");
+			System.out.println("3 - PIB semestre/ano");
+			System.out.println("Escolha o menu que deseja -> ");
+			selecaoMenu = s.nextInt();
+
+		} while (selecaoMenu != 1 && selecaoMenu != 2 && selecaoMenu != 3);
+
+		switch (selecaoMenu) {
+		case 1:
+
+			avancarTempo();
+
+			break;
+		case 2:
+
+			// chamar classe estatistica com print das medias e medianas
+
+			break;
+		case 3:
+
+			// imprimir PIB por semestre e por ano
+
+			break;
+		}
 
 	}
 
@@ -138,12 +170,10 @@ public class Main {
 
 	}
 
-	public static void funcionariosEmp(ArrayList<Empresas> emps) {
+	public static void funcionariosEmp() {
 
-		
-		
-			int b,c;
-			for(int k = 0; k < numEmpresas; k++){
+		int b, c;
+		for (int k = 0; k < numEmpresas; k++) {
 			for (int i = 0; i < empresas.get(k).getNumTrabalhadores(); i++) {
 				do {
 					b = r.nextInt(familias.size());
@@ -152,15 +182,16 @@ public class Main {
 						c = r.nextInt(2);
 					}
 				} while (familias.get(b).get(c).getLocalTrabalho().equals("") == false);
-				familias.get(b).get(c).setLocalTrabalho("Empresa " + (k+1));
+				familias.get(b).get(c).setLocalTrabalho("Empresa " + (k + 1));
 
 			}
-			}
-			
-			System.out.println("Número de desempregados antes da alocação dos individuos nas empresas -> " + numeroDesempregadosDepoisGov);
-			
 		}
-	
+
+		System.out.println("Número de desempregados antes da alocação dos individuos nas empresas -> "
+				+ numeroDesempregadosDepoisGov);
+
+	}
+
 	public static void numeroEmpresas() {
 
 		if (numeroDesempregadosDepoisGov % 50 == 0) {
@@ -398,22 +429,22 @@ public class Main {
 		else {
 
 			numeroDesempregadosDepoisGovDes = numeroDesempregadosDepoisGov;
-			
+
 			for (int i = 0; i < numEmpresas; i++) {
 
 				if (i == (numEmpresas - 1)) {
-					int modulus = (int)(numeroDesempregadosDepoisGovDes / 50);
-					for (int k = 0 ; k< modulus; k++) {
+					int modulus = (int) (numeroDesempregadosDepoisGovDes / 50);
+					for (int k = 0; k < modulus; k++) {
 						numFuncionariosEmp = 50;
-						emps.add(new Empresas(0, 0, "Empresa " + (emps.size() +1) , numFuncionariosEmp));
+						emps.add(new Empresas(0, 0, "Empresa " + (emps.size() + 1), numFuncionariosEmp));
 					}
-					if(numeroDesempregadosDepoisGovDes - (50 * modulus) > 0)
-					{
-					      numFuncionariosEmp = numeroDesempregadosDepoisGovDes - (50 * modulus);
-					      
+					if (numeroDesempregadosDepoisGovDes - (50 * modulus) > 0) {
+						numFuncionariosEmp = numeroDesempregadosDepoisGovDes - (50 * modulus);
+
 					}
-					
-					System.out.println(" O sistema criou automaticamente " + (modulus) + " empresas para que não houvesse pessoas desempregadas");
+
+					System.out.println(" O sistema criou automaticamente " + (modulus)
+							+ " empresas para que não houvesse pessoas desempregadas");
 
 				}
 
@@ -424,7 +455,7 @@ public class Main {
 				else {
 					numFuncionariosEmp = 1 + r.nextInt(numeroDesempregadosDepoisGovDes - (numEmpresas - i));
 				}
-				emps.add(new Empresas(0, 0, "Empresa " + (emps.size() +1) , numFuncionariosEmp));
+				emps.add(new Empresas(0, 0, "Empresa " + (emps.size() + 1), numFuncionariosEmp));
 				numeroDesempregadosDepoisGovDes -= numFuncionariosEmp;
 
 			}
@@ -470,5 +501,97 @@ public class Main {
 
 	}
 
-	
+	public static void avancarTempo() {
+
+		do {
+			System.out.println("Insira o número de meses/anos que deseja avançar na economia (Exemplo: 1y ou 6m) -> ");
+			numTemp = s.nextLine().toLowerCase();
+
+		} while (!(numTemp.substring(numTemp.length() - 1, numTemp.length() - 1).equals("y")
+				|| !(numTemp.substring(numTemp.length() - 1, numTemp.length() - 1).equals("m"))));
+
+		if (!(numTemp.substring(numTemp.length() - 1, numTemp.length() - 1).equals("y"))) {
+
+			// efectuarTransacoes(12*Integer.parseInt(numTemp.substring(0,
+			// numTemp.length() - 2)));
+
+		}
+
+		else {
+
+			// efectuarTransacoes(Integer.parseInt(numTemp.substring(0,
+			// numTemp.length() - 2)));
+		}
+
+	}
+
+	public static void efectuarTransacoes(int mes) {
+
+		for (int i = 1; i <= mes; i++) {
+			numMesesPassados++;
+
+			if ((numMesesPassados - 1) % 12 == 0) {
+
+				calcularEstatisticas(familias, governo, empresas);
+				// colocar no array list respetivo na classe estatistica!!
+			}
+
+			if (mes % 3 == 0) {
+				// calcularPib();
+			}
+			
+			for(int fam = 0; fam < familias.size(); fam++)
+			{
+				for(int ind = 0; ind < familias.get(fam).size(); ind++)
+				{
+					while(familias.get(fam).get(ind).getContadorIncome() > 0){
+						
+						familias.get(fam).get(ind).destinoGasto(familias, empresas, governo);
+						
+					}
+					
+					familias.get(fam).get(ind).receberSalario();
+				}
+			}
+			
+			for(int j = 0; j < empresas.size(); j++)
+			{
+				for(int k = 0; k < empresas.size(); k++){
+					
+					empresas.get(j).pagarSalarios();
+					
+					if(empresas.get(j).getContadorIncome() < 0)
+					{
+						//pedir emprestimo ao banco
+						//banco.pedirEmprestimo(Math.abs(empresas.get(j).getContadorIncome()));
+						empresas.get(j).setContadorIncome(0);
+					}
+					
+					else{
+						while(empresas.get(j).getContadorIncome() > 0)
+						{
+							empresas.get(j).destinoGasto(familias, empresas, governo);
+						}
+					}
+				}
+			}
+			
+			
+			governo.pagarSalarios();
+			if(governo.getContadorIncome() < 0)
+			{
+				//pedir emprestimo ao banco
+				//banco.pedirEmprestimo(Math.abs(empresas.get(j).getContadorIncome()));
+				governo.setContadorIncome(0);
+			}
+			
+			else{
+				while(governo.getContadorIncome() > 0){
+					governo.destinoGasto(familias, empresas, governo);
+				}
+			}
+			
+		}
+	}
+
 }
